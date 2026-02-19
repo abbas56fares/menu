@@ -1,0 +1,166 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('images/chocolatelatte.jpg');
+    background-size: cover;
+}
+
+header {
+    background-color: #921d1d;
+    color: white;
+    padding: 14px;
+    text-align: center;
+    position: relative;
+}
+
+.text-secondary {
+    color: white;
+}
+.lead {
+    color: #921d1d;
+}
+
+.menu-category {
+    margin-left: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.menu-toggle, #menu-title {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.menu-category {
+    padding-left: 20px;
+}
+
+.menu-group {
+    color: #921d1d;
+}
+
+.menu-group h3 {
+    border-radius: 3px;
+    width: fit-content;
+}
+
+#menu-title {
+    padding: 2px 16px;
+    background-color: #921d1d;
+    border-radius: 3px;
+}
+
+.menu-toggle {
+    color: #921d1d;
+    display: flex;
+    margin: 20px 0 35px 0;
+    align-items: center;
+    justify-content: center;
+}
+
+#cart-container {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#cart-button {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#cart-button.active {
+    background-color: #FF5733;
+}
+
+#cart-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#cart-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#cart-popup.show {
+    display: flex;
+}
+
+.menu-item {
+    background: white;
+    margin: 4px;
+    border-radius: 5px;
+    text-align: center;
+    width: 150px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    transform-origin: center;
+}
+
+.menu-item:hover {
+    transform: scale(1.05);
+}
+
+.menu-item img {
+    padding: 4px;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    transition: none; /* prevent scaling */
+}
+
+.menu-item h4,
+.menu-item p,
+.menu-item button {
+    transition: none; /* prevent scaling */
+}
+
+.menu-item button {
+    background-color: #921d1d;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.menu-item button:hover {
+    background-color: #FF5733;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    background: #444;
+    color: #fff;
+    padding: 15px;
+    opacity: 0.8;
+}
