@@ -34,16 +34,37 @@ const menuItems = [
     { id: 30, name: "Chocolate Latte", price: 6, category: "latte", img: "images/chocolatelatte.jpg" }
 ];
 
+let toastTimeout;
+
+function showToast(message) {
+    const toast = document.getElementById("toast-message");
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 1600);
+}
+
 function displayMenu() {
     menuItems.forEach(item => {
         const categoryDiv = document.getElementById(item.category);
+        if (!categoryDiv) return;
+
         const itemDiv = document.createElement("div");
         itemDiv.classList.add("menu-item");
         itemDiv.innerHTML = `
-            <img src="${item.img}" alt="${item.name}">
-            <h4>${item.name}</h4>
-            <p>$${item.price}</p>
-            <button onclick="addToCart(${item.id})">Add to Cart</button>
+            <img src="${item.img}" alt="${item.name}" loading="lazy">
+            <div class="menu-item-body">
+                <div>
+                    <h4>${item.name}</h4>
+                    <p class="item-price">$${item.price.toFixed(2)}</p>
+                </div>
+                <button type="button" class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+            </div>
         `;
         categoryDiv.appendChild(itemDiv);
     });
@@ -51,8 +72,9 @@ function displayMenu() {
 
 function addToCart(itemId) {
     const item = menuItems.find(i => i.id === itemId);
-    const cartItem = cart.find(i => i.id === itemId);
+    if (!item) return;
 
+    const cartItem = cart.find(i => i.id === itemId);
     if (cartItem) {
         cartItem.quantity++;
     } else {
@@ -60,42 +82,56 @@ function addToCart(itemId) {
     }
 
     updateCart();
+    showToast(`Added ${item.name}`);
 }
 
 function updateCart() {
     const cartList = document.getElementById("cart-list");
     const totalPriceEl = document.getElementById("total-price");
+    const deliveryFeeEl = document.getElementById("delivery-fee");
     const placeOrderBtn = document.getElementById("place-order");
     const cartCount = document.getElementById("cart-count");
+    const cartButton = document.getElementById("cart-button");
 
     cartList.innerHTML = "";
 
-    let totalPrice = 0;
+    let subtotal = 0;
     let totalItems = 0;
 
-    cart.forEach(item => {
-        totalPrice += item.price * item.quantity;
-        totalItems += item.quantity;
-        const li = document.createElement("li");
-        li.innerHTML = `${item.name} x ${item.quantity} 
-                        <button onclick="removeFromCart(${item.id})">Remove</button>`;
-        cartList.appendChild(li);
-    });
-
-    cartCount.textContent = totalItems;
-
-    if (cart.length > 0) {
-        totalPrice += DELIVERY_TAX;
-        placeOrderBtn.disabled = false;
+    if (cart.length === 0) {
+        cartList.innerHTML = `<li class="cart-empty">No items in cart yet.</li>`;
     } else {
-        placeOrderBtn.disabled = true;
+        cart.forEach(item => {
+            subtotal += item.price * item.quantity;
+            totalItems += item.quantity;
+
+            const li = document.createElement("li");
+            li.classList.add("cart-item-row");
+            li.innerHTML = `
+                <span><strong>${item.name}</strong> x ${item.quantity} ($${(item.price * item.quantity).toFixed(2)})</span>
+                <button type="button" class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+            `;
+            cartList.appendChild(li);
+        });
     }
 
+    const activeDeliveryFee = cart.length > 0 ? DELIVERY_TAX : 0;
+    const totalPrice = subtotal + activeDeliveryFee;
+
+    cartCount.textContent = totalItems;
+    deliveryFeeEl.textContent = activeDeliveryFee.toFixed(2);
     totalPriceEl.textContent = totalPrice.toFixed(2);
+    placeOrderBtn.disabled = cart.length === 0;
+
+    if (cartButton) {
+        cartButton.classList.toggle("active", totalItems > 0);
+    }
 }
 
 function removeFromCart(itemId) {
     const cartItem = cart.find(i => i.id === itemId);
+    if (!cartItem) return;
+
     if (cartItem.quantity > 1) {
         cartItem.quantity--;
     } else {
@@ -105,12 +141,11 @@ function removeFromCart(itemId) {
     updateCart();
 }
 
-//  Handle Place Order
+// Handle Place Order
 document.getElementById("place-order").addEventListener("click", function () {
     const totalPrice = document.getElementById("total-price").textContent;
-    const phoneNumber = "+96171232811";
+    const phoneNumber = "96171232811";
 
-    // Send order to backend
     fetch("sales.php", {
         method: "POST",
         headers: {
@@ -122,7 +157,6 @@ document.getElementById("place-order").addEventListener("click", function () {
     .then(data => {
         console.log("Server response:", data);
 
-        // After saving, send to WhatsApp
         let orderText = "Order Details:\n";
         cart.forEach(item => {
             orderText += `${item.name} x ${item.quantity}\n`;
@@ -132,7 +166,6 @@ document.getElementById("place-order").addEventListener("click", function () {
         const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(orderText)}`;
         window.open(whatsappURL, "_blank");
 
-        // Optional: clear cart
         cart.length = 0;
         updateCart();
         document.getElementById("cart-popup").classList.remove("show");
@@ -143,21 +176,54 @@ document.getElementById("place-order").addEventListener("click", function () {
     });
 });
 
+// Cart Modal Open / Close
+const cartPopup = document.getElementById("cart-popup");
+
 document.getElementById("cart-button").addEventListener("click", function () {
-    const cartPopup = document.getElementById("cart-popup");
     cartPopup.classList.toggle("show");
 });
 
 document.getElementById("close-cart").addEventListener("click", function () {
-    const cartPopup = document.getElementById("cart-popup");
     cartPopup.classList.remove("show");
 });
 
-document.querySelectorAll('.menu-toggle').forEach(header => {
-    header.addEventListener('click', () => {
+cartPopup.addEventListener("click", function (event) {
+    if (event.target === cartPopup) {
+        cartPopup.classList.remove("show");
+    }
+});
+
+// Accordion Category Toggles
+document.querySelectorAll(".menu-toggle").forEach(header => {
+    header.addEventListener("click", () => {
         const content = header.nextElementSibling;
-        content.classList.toggle('hidden');
+        content.classList.toggle("hidden");
+    });
+});
+
+// Category Filter Buttons
+document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const selectedCategory = btn.dataset.category;
+
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        document.querySelectorAll(".menu-group").forEach(group => {
+            const groupCategory = group.dataset.group;
+            const categoryList = group.querySelector(".menu-category");
+
+            if (selectedCategory === "all" || groupCategory === selectedCategory) {
+                group.classList.remove("filtered-out");
+                if (categoryList) {
+                    categoryList.classList.remove("hidden");
+                }
+            } else {
+                group.classList.add("filtered-out");
+            }
+        });
     });
 });
 
 displayMenu();
+updateCart();
