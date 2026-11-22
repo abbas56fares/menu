@@ -3,99 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Café Ordering</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Fakih Cafe</title>
     <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <header>
-        <h1>Welcome to Our Café</h1>
-        <p>(This is just an order Menu)</p>
-        <div id="cart-container">
-            <button id="cart-button">Cart (<span id="cart-count">0</span>)</button>
+    <header class="cafe-header">
+        <div class="header-wrap">
+            <div>
+                <h1>Fakih Cafe</h1>
+                <p class="cafe-tagline">Street cafe serving coffee, lattes, frappes, shakes, smoothies, and tea.</p>
+            </div>
+            <div id="cart-container">
+                <button id="cart-button" type="button">
+                    Cart (<span id="cart-count">0</span>)
+                </button>
+            </div>
         </div>
     </header>
 
-       <div class="container py-5">
-
-        <section id="about" class="mb-5">
-            <div class="bg-white p-4 rounded shadow-sm">
-              <h2 class="text-secondary">Welcome to Our Café</h2>
-              <p class="lead">
-                At our cozy café, we believe in serving more than just drinks — we offer moments of comfort, joy, and community.
-                Whether you're in the mood for a creamy milkshake, a bold espresso, or a refreshing smoothie, we have something special just for you.
-                Come in, relax, and enjoy your favorite flavors in a warm and friendly atmosphere.
-              </p>
+    <main class="container py-4">
+        <section id="about" class="mb-4">
+            <div class="about-box p-4 rounded">
+                <h2 class="about-title">About Fakih Cafe</h2>
+                <p class="lead mb-0">
+                    Fakih Cafe is a small street cafe focused on everyday drinks made fresh when you order. Stop by or send your order straight to WhatsApp for quick pickup or local drop-off.
+                </p>
             </div>
-          </section>
-        </div>
-
-          <div class="container py-5">
-        <h2 id="menu-title" class="text-white bg-primary p-3 rounded">
-          Menu
-        </h2>
-      
-      
-        <section id="menu" class="bg-white border p-4 rounded shadow-sm mt-2 ">
-
-          <div class="menu-group">
-            <h3 class="menu-toggle text-primary">Milk Shakes</h3>
-            <div id="milk-shakes" class="menu-category hidden">
-            </div>
-          </div>
-      
-          <div class="menu-group">
-            <h3 class="menu-toggle text-success">Coffee</h3>
-            <div id="coffee" class="menu-category hidden">
-            </div>
-          </div>
-      
-          <div class="menu-group">
-            <h3 class="menu-toggle text-warning">Tea</h3>
-            <div id="tea" class="menu-category hidden">
-            </div>
-          </div>
-      
-          <div class="menu-group">
-            <h3 class="menu-toggle text-danger">Smoothies</h3>
-            <div id="smoothies" class="menu-category hidden">
-            </div>
-          </div>
-      
-          <div class="menu-group">
-            <h3 class="menu-toggle text-info">Frappe</h3>
-            <div id="frappe" class="menu-category hidden">
-            </div>
-          </div>
-      
         </section>
-      
-      </div>
 
-    <footer>
-    <div class="container text-center">
-      <p class="mb-1">&copy; 2025 Cozy Corner Café. All rights reserved.</p>
-      <small>123 Coffee Street, · info@cozycafe.com · (123) 456-7890</small>
+        <section id="menu-section">
+            <div class="menu-bar mb-3">
+                <h2 id="menu-title" class="m-0">Menu</h2>
+                <div class="category-filters" role="group" aria-label="Menu categories">
+                    <button type="button" class="filter-btn active" data-category="all">All</button>
+                    <button type="button" class="filter-btn" data-category="coffee">Coffee</button>
+                    <button type="button" class="filter-btn" data-category="latte">Latte</button>
+                    <button type="button" class="filter-btn" data-category="frappe">Frappe</button>
+                    <button type="button" class="filter-btn" data-category="milk-shakes">Milk Shakes</button>
+                    <button type="button" class="filter-btn" data-category="smoothies">Smoothies</button>
+                    <button type="button" class="filter-btn" data-category="tea">Tea</button>
+                </div>
+            </div>
+
+            <div id="menu" class="menu-sheet p-3 p-md-4 rounded">
+                <div class="menu-group" data-group="coffee">
+                    <h3 class="menu-toggle" data-target="coffee">
+                        <span>Coffee</span>
+                        <span class="toggle-label">Toggle</span>
+                    </h3>
+                    <div id="coffee" class="menu-category"></div>
+                </div>
+
+                <div class="menu-group" data-group="latte">
+                    <h3 class="menu-toggle" data-target="latte">
+                        <span>Latte</span>
+                        <span class="toggle-label">Toggle</span>
+                    </h3>
+                    <div id="latte" class="menu-category"></div>
+                </div>
+
+                <div class="menu-group" data-group="frappe">
+                    <h3 class="menu-toggle" data-target="frappe">
+                        <span>Frappe</span>
+                        <span class="toggle-label">Toggle</span>
+                    </h3>
+                    <div id="frappe" class="menu-category"></div>
+                </div>
+
+                <div class="menu-group" data-group="milk-shakes">
+                    <h3 class="menu-toggle" data-target="milk-shakes">
+                        <span>Milk Shakes</span>
+                        <span class="toggle-label">Toggle</span>
+                    </h3>
+                    <div id="milk-shakes" class="menu-category"></div>
+                </div>
+
+                <div class="menu-group" data-group="smoothies">
+                    <h3 class="menu-toggle" data-target="smoothies">
+                        <span>Smoothies</span>
+                        <span class="toggle-label">Toggle</span>
+                    </h3>
+                    <div id="smoothies" class="menu-category"></div>
+                </div>
+
+                <div class="menu-group" data-group="tea">
+                    <h3 class="menu-toggle" data-target="tea">
+                        <span>Tea</span>
+                        <span class="toggle-label">Toggle</span>
+                    </h3>
+                    <div id="tea" class="menu-category"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="cafe-footer">
+        <div class="container">
+            <div class="footer-cols">
+                <div>
+                    <h4>Fakih Cafe</h4>
+                    <p>Main Street, Saida, Lebanon</p>
+                    <p>Every day: 7:30 AM to 10:30 PM</p>
+                </div>
+                <div>
+                    <h4>Orders and Contact</h4>
+                    <p>WhatsApp: +961 71 232 811</p>
+                    <p>Email: contact@fakihcafe.com</p>
+                </div>
+                <div>
+                    <h4>Neighborhood Spot</h4>
+                    <p>Fresh coffee, shakes, tea, and cold drinks</p>
+                    <p>Direct WhatsApp ordering</p>
+                </div>
+            </div>
+            <div class="footer-copy">
+                <p class="mb-0">Fakih Cafe. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="cart-popup" role="dialog" aria-modal="true" aria-labelledby="cart-heading">
+        <div id="cart-content">
+            <div class="cart-top">
+                <h2 id="cart-heading" class="m-0">Your Order</h2>
+                <button id="close-cart" type="button" aria-label="Close cart">x</button>
+            </div>
+            <ul id="cart-list"></ul>
+            <div class="cart-totals">
+                <p><span>Delivery Fee:</span> <strong>$<span id="delivery-fee">0.00</span></strong></p>
+                <p class="cart-grand"><span>Total Price:</span> <strong>$<span id="total-price">0.00</span></strong></p>
+            </div>
+            <button id="place-order" type="button" disabled>Send Order on WhatsApp</button>
+        </div>
     </div>
-  </footer>
 
-  <div id="cart-popup">
-    <div id="cart-content">
-        <h2>Your Cart</h2>
-        <ul id="cart-list"></ul>
-        <p><strong>Delivery Fee: $<span id="delivery-fee">0</span></strong></p>
-        <p><strong>Total Price: $<span id="total-price">0</span></strong></p>
-        <button id="close-cart">Close</button>
-        <button id="place-order" disabled>Place Order</button>
-    </div>
-</div>
+    <div id="toast-message" class="toast-message" role="status" aria-live="polite"></div>
 
-<script src="script.js"></script>
-<script src="bootstrap.js"></script>
-
-
-
+    <script src="bootstrap.js"></script>
+    <script src="script.js"></script>
 </body>
-
 </html>
